@@ -1,23 +1,54 @@
 import React, { useState } from 'react'
 import Background from '@/assets/login2.png'
-import Logo from '@/assets/logo.png'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
+import apiClient from '@/lib/api-client'
+import { SIGNUP_ROUTE } from '@/utils/constants'
 
 const Auth = () => {
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const validateSignup = () => {
+    if(!username || username.trim().length < 5){
+      toast.error("Username should be at least 5 characters long");
+      return false;
+    }
+
+    if(!password || password.trim().length < 8){
+      toast.error("Password should be at least 8 characters long");
+      return false;
+    }
+
+    if(password!== confirmPassword){
+      toast.error("Passwords do not match");
+      return false;
+    }
+      
+    return true;
+  }
+
+  const handleSignup = async () => {
+    if(validateSignup()){
+      try {
+        console.log(SIGNUP_ROUTE, {username, password});
+        const response = await apiClient.post(SIGNUP_ROUTE, {username, password});
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   const handleLogin = async () => {
     
   }
 
-  const handleSignup = async () => {
-    
-  }
+ 
 
   return (
     <div className='h-[100vh] w-[100vw] flex justify-center items-center '>
@@ -42,13 +73,13 @@ const Auth = () => {
                   data-[state=active]:border-b-purple-500 p-3 transition-all duration-300">Signup</TabsTrigger>
                 </TabsList>
                 <TabsContent className="flex flex-col gap-5 mt-10" value="login">
-                  <Input className="rounded-full p-6" placeholder="Enter email" type="email" value={email} onChange={(e) => {setEmail(e.target.value)}}/>
+                  <Input className="rounded-full p-6" placeholder="Enter username" type="text" value={username} onChange={(e) => {setUsername(e.target.value)}}/>
                   <Input className="rounded-full p-6" placeholder="Enter password" type="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
                   <Button className="rounded-full p-6" onClick={handleLogin}>Login</Button>
                 </TabsContent>
 
                 <TabsContent className="flex flex-col gap-5" value="signup">
-                  <Input className="rounded-full p-6" placeholder="Enter email" type="email" value={email} onChange={(e) => {setEmail(e.target.value)}}/>
+                  <Input className="rounded-full p-6" placeholder="Enter Username" type="text" value={username} onChange={(e) => {setUsername(e.target.value)}}/>
                   <Input className="rounded-full p-6" placeholder="Enter password" type="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
                   <Input className="rounded-full p-6" placeholder="Confirm password" type="password" value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value)}}/>
                   <Button className="rounded-full p-6" onClick={handleSignup}>Signup</Button>
