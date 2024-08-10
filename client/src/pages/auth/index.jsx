@@ -5,13 +5,17 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
-import { SIGNUP_ROUTE } from '@/utils/constants'
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from '@/utils/constants'
+import { useNavigate } from 'react-router-dom'
+import { useAppStore } from '@/store'
 
 const Auth = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate(); 
+  const { setUserInfo } = useAppStore();
 
   const validateSignup = () => {
     if(!username || username.trim().length < 5){
@@ -33,20 +37,46 @@ const Auth = () => {
   }
 
   const handleSignup = async () => {
-    if(validateSignup()){
-      try {
-        console.log(SIGNUP_ROUTE, {username, password});
-        const response = await apiClient.post(SIGNUP_ROUTE, {username, password});
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
+    if (validateSignup()) {
+        try {
+            const response = await apiClient.post(SIGNUP_ROUTE, { username, password }, { withCredentials: true });
+            if(response.status === 201) {
+              setUserInfo(response.data.user);
+              toast.success("User created successfully");
+              navigate('/profile');
+            }
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error('Signup failed. Please try again.');
+            }
+            console.error(error);
+        }
     }
-  }
+}
 
-  const handleLogin = async () => {
-    
-  }
+const handleLogin = async () => {
+    try {
+        const response = await apiClient.post(LOGIN_ROUTE, { username, password }, { withCredentials: true });
+        if(response.data.user._id){
+          setUserInfo(response.data.user);
+          if(response.data.user.profileSetUp) {
+              navigate("/chat");
+          } else {
+            navigate("/profile");
+          }
+        }
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+            toast.error(error.response.data.message);
+        } else {
+            toast.error('Login failed. Please try again.');
+        }
+        console.error(error);
+    }
+}
+
 
  
 
@@ -62,7 +92,7 @@ const Auth = () => {
               <p className="font-medium text-center mt-4 px-2">Fill in the details to start chatting</p>
             </div>
             <div className="flex justify-center items-center w-full">
-              <Tabs className='w-3/4'>
+              <Tabs className='w-3/4' defaultValue='login'>
                 <TabsList className="bg-transparent rounded-none w-full">
                   <TabsTrigger value="login" 
                   className="data-[state=active]:bg-transparent text-black text-opacity-90 border-b-2 rounded-none w-full data-[state:active]:text-black data-[state=active]:font-semibold 
