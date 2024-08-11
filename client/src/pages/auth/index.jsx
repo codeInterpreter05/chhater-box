@@ -9,6 +9,7 @@ import { LOGIN_ROUTE, SIGNUP_ROUTE } from '@/utils/constants'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '@/store'
 
+
 const Auth = () => {
 
   const [username, setUsername] = useState("");
@@ -16,6 +17,7 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate(); 
   const { setUserInfo } = useAppStore();
+  const { userInfo } = useAppStore();
 
   const validateSignup = () => {
     if(!username || username.trim().length < 5){
@@ -61,10 +63,11 @@ const handleLogin = async () => {
         const response = await apiClient.post(LOGIN_ROUTE, { username, password }, { withCredentials: true });
         if(response.data.user._id){
           setUserInfo(response.data.user);
-          if(response.data.user.profileSetUp) {
+          console.log(userInfo);
+          if(response.data.user.profileSetUp === true) {
               navigate("/chat");
           } else {
-            navigate("/profile");
+              navigate("/profile");
           }
         }
     } catch (error) {
@@ -76,9 +79,6 @@ const handleLogin = async () => {
         console.error(error);
     }
 }
-
-
- 
 
   return (
     <div className='h-[100vh] w-[100vw] flex justify-center items-center '>
