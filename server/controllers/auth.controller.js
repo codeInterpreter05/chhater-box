@@ -105,3 +105,27 @@ export const getUserInfo = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server Error' });
     }
 }
+
+export const updateProfile = async (req, res, next) => {
+    try {
+        console.log(req.body);
+        const { userId } = req;
+        const { username, profileSetUp, image, color } = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(userId, { profileSetUp:true, color }, { new: true, runValidators: true });
+
+        return res.status(200).json({
+            user: {
+                _id: updatedUser._id,
+                username: updatedUser.username,
+                profileSetUp: updatedUser.profileSetUp,
+                image: image || updatedUser.image,
+                color: color || updatedUser.color,
+            }
+        })
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server Error' });
+    }
+}

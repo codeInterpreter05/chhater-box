@@ -15,10 +15,12 @@ const userSchema = new mongoose.Schema({
     image: {
         type: String,
         required: false,
+        default: ""
     },
     color: {
         type: Number,
         required: false,
+        default: 0,
     },
     profileSetUp: {
         type: Boolean,
