@@ -7,6 +7,9 @@ import { colors, getColor } from '@/utils/utils';
 import { FaTrash, FaPlus } from 'react-icons/fa';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import apiClient from '@/lib/api-client';
+import { toast } from 'sonner';
+import { UPDATE_PROFILE_ROUTE } from '@/utils/constants';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -28,7 +31,17 @@ const Profile = () => {
   };
 
   const saveChanges = async () => {
-    // Save changes logic
+    try {
+      const response = await apiClient.post(UPDATE_PROFILE_ROUTE, {color: selectedColor}, {withCredentials: true});
+
+      if(response.status === 200) {
+        setUserInfo(response.data.user);
+        toast.success('Profile created successfully!');
+        navigate('/chat');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleGoBack = () => {
