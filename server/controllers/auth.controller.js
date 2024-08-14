@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { renameSync, unlinkSync } from 'fs';
 
 const maxAge = 1000 * 60 * 60 * 24 * 3;
 
@@ -42,8 +43,6 @@ export const signup = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server Error' });
     }
 }
-
-
 
 export const login = async (req, res, next) => {
     try {
@@ -127,5 +126,62 @@ export const updateProfile = async (req, res, next) => {
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Internal server Error' });
+    }
+}
+
+export const addProfileImage = async (req, res, next) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No image provided' });
+        }
+
+        console.log(req.file);
+
+        const date = Date.now();
+        const fileName = `uploads/profiles/${date}_${req.file.originalname}`;
+
+        renameSync(req.file.path, `./${fileName}`);
+
+        console.log(fileName);
+
+
+        const updatedUser = await User.findByIdAndUpdate(
+            req.userId,
+            { image: fileName },
+            { new: true, runValidators: true }
+        );
+
+        return res.status(200).json({
+            user: {
+                image: updatedUser.image,
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const deleteProfileImage = async (req, res, next) => {
+    const { userId } = req;
+
+    try {
+        const user = await User.findByIdAndUpdate(userId, { new: true, runValidators: true });
+        console.log(user.username);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        unlinkSync(`./${user.image}`);
+        user.image = null;
+        await user.save();
+        return res.status(200).json({
+            user: {
+                image: null,
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 }
