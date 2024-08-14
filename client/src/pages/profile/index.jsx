@@ -98,16 +98,17 @@ const Profile = () => {
           
         </div>
         <div className="grid sm:grid-cols-2 sm:justify-items-center">
-          <div className="w-full h-full relative flex items-center justify-center mx-auto"
+          <div className="w-full h-full flex justify-center items-center">
+          <div className="w-24 h-24 sm:h-32 sm:w-32 relative flex items-center justify-center mx-auto"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
-            <Avatar className='w-full h-full rounded-full overflow-hidden flex justify-center items-center'>
+            <Avatar className='w-24 h-24 sm:h-32 sm:w-32 rounded-full overflow-hidden flex justify-center items-center'>
               {
                 
                 image ? <AvatarImage src={image} alt="profile" className='w-full h-full object-cover bg-black' /> :
                   (
-                    <div className={`uppercase h-24 w-24 md:h-32 md:w-32 text-5xl border-[1px] flex items-center justify-center rounded-full ${getColor(selectedColor)}`}>
+                    <div className={`uppercase h-24 w-24 sm:h-32 sm:w-32 text-5xl border-[1px] flex items-center justify-center rounded-full ${getColor(selectedColor)}`}>
                       {username ? username.charAt(0).toUpperCase() : userInfo?.username?.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -128,6 +129,7 @@ const Profile = () => {
               )
             }
             <input type='file' accept=".jpeg, .jpg, .png, .svg, .webp " name='profile-image' className="hidden" ref={fileInputRef} onChange={handleImageChange}/>
+          </div>
           </div>
           <div className="flex w-75 min-w-32 md:min-w-64 flex-col gap-5 text-white items-center justify-center mt-5">
           <div className="w-full flex flex-col gap-5 justify-center items-center">
