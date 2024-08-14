@@ -66,10 +66,21 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "typewriter": {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        },
+        "blink": {
+          '0%, 100%': { borderColor: 'transparent' },
+          '50%': { borderColor: 'white' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "typewriter": 'typewriter 3s steps(30) 1s forwards',
+        "blink": 'blink 1s step-end infinite',
+        
       },
     },
   },
