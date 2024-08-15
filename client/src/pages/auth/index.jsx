@@ -86,7 +86,7 @@ const handleLogin = async () => {
         <div className="flex flex-col gap-10 items-center justify-center">
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center gap-4">
-                <h1 className="text-4xl font-bold md:text-5xl">ChatterBox</h1>
+                <h1 className="text-4xl font-bold md:text-5xl">Synchronous</h1>
         
               </div>
               <p className="font-medium text-center mt-4 px-2">Fill in the details to start chatting</p>
