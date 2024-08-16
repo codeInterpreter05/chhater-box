@@ -11,6 +11,7 @@ import apiClient from '@/lib/api-client';
 import { toast } from 'sonner';
 import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE } from '@/utils/constants';
 import { CodeSquare } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -92,10 +93,13 @@ const Profile = () => {
 
   return (
     <div className="bg-[#1B1C24] h-[100vh] flex items-center justify-center flex-col gap-10">
-      <div className="flex flex-col gap-10 w-[90vw] sm:w-[80vw] md:w-max px-4 py-8 border-[1px] border-white/50 rounded-xl">
-        <div className='flex justify-start gap-2 sm:gap-5 items-center'>
+       <div className='w-full flex justify-start items-center absolute top-4 pl-4'>
           <IoArrowBack onClick={handleGoBack} className='text-3xl lg:text-4xl text-white/90 cursor-pointer' />
-          
+        </div>
+      <div className="flex flex-col gap-4 w-[100vw] sm:w-[80vw] md:w-max px-4 rounded-xl mt-2">
+       
+        <div className='flex justify-center items-center text-white'>
+          <Logo/>
         </div>
         <div className="grid sm:grid-cols-2 sm:justify-items-center">
           <div className="w-full h-full flex justify-center items-center">
@@ -138,7 +142,7 @@ const Profile = () => {
       type="text"
       placeholder="Username"
       disabled
-      value={`Hello ${userInfo.username}!`}
+      value={`Hello ${userInfo.username.toUpperCase()}`}
       className="rounded-lg p-6 bg-[#2C2E3B] border-none max-w-72 animate-[typewriter_1.5s_steps(30)_0.5s_forwards] opacity-0"
     />
     <span className="absolute top-0 right-0 h-full w-full animate-[blink_1s_step-end_infinite]"></span>
@@ -149,7 +153,7 @@ const Profile = () => {
       type="text"
       placeholder="Username"
       disabled
-      value="Welcome to chatterbox"
+      value="Welcome to Synchat"
       className="rounded-lg p-6 bg-[#2C2E3B] border-none max-w-72 animate-[typewriter_1.5s_steps(30)_2s_forwards] opacity-0"
     />
     <span className="absolute top-0 right-0 h-full w-full animate-[blink_1s_step-end_infinite]"></span>
@@ -180,8 +184,8 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <div className="w-full">
-          <Button className='h-12 w-full bg-purple-700 hover:bg-purple-900 transition-all duration-200 text-xl' onClick={saveChanges}>
+        <div className="w-full mt-4 flex items-center justify-center">
+          <Button className='h-12 w-full max-w-[auto] sm:w-[100%] bg-purple-700 hover:bg-purple-900 transition-all duration-200 text-xl' onClick={saveChanges}>
             Create Profile
           </Button>
         </div>
