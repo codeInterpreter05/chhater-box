@@ -8,6 +8,7 @@ import apiClient from '@/lib/api-client'
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from '@/utils/constants'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '@/store'
+import Logo from '@/components/ui/Logo'
 
 
 const Auth = () => {
@@ -82,12 +83,11 @@ const handleLogin = async () => {
 
   return (
     <div className='h-[100vh] w-[100vw] flex justify-center items-center '>
-      <div className="h-[88vh] bg-white border-2 border-whitetext-opacity-0 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2 py-2">
+      <div className="h-[90vh] bg-white border-2 border-whitetext-opacity-0 shadow-2xl w-[94vw] sm:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid md:grid-cols-2 py-4">
         <div className="flex flex-col gap-10 items-center justify-center">
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center gap-4">
-                <h1 className="text-4xl font-bold md:text-5xl">Synchronous</h1>
-        
+                <Logo/>
               </div>
               <p className="font-medium text-center mt-4 px-2">Fill in the details to start chatting</p>
             </div>
@@ -118,7 +118,7 @@ const handleLogin = async () => {
               </Tabs>
             </div>
         </div>
-        <div className="hidden xl:flex justify-center items-center">
+        <div className="hidden md:flex justify-center items-center">
           <img src={Background} alt="bacgorund login" className="h-[500px]" />
         </div>
       </div>

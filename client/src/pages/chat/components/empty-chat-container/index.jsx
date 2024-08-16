@@ -1,3 +1,4 @@
+import Logo from '@/components/ui/Logo'
 import { animationDefualtOptions } from '@/utils/utils'
 import React from 'react'
 import Lottie from 'react-lottie'
@@ -11,9 +12,9 @@ const EmtyChatContainer = () => {
         options={animationDefualtOptions}
       />
       <div className="text-opacity-80 text-white flex flex-col gap-5 items-center mt-10 lg:text-4xl text-3xl transition-all duration-300 text-center">
-        <h3 className="poppins-medium">
-            Hi <span className="text-purple-500">!</span> Welcome to
-            <span className="text-purple-500"> Synchronus</span> chat app 
+        <h3 className="poppins-medium flex flex-col items-center">
+            <Logo/>
+           <span className="text-gray-500 text-2xl">Connect with your friends and family</span>
         </h3>
       </div>
     </div>
