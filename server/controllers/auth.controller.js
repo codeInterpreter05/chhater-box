@@ -56,6 +56,7 @@ export const login = async (req, res, next) => {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
+
         const auth = await bcrypt.compare(password, user.password);
 
         if (!auth) {
@@ -89,6 +90,8 @@ export const getUserInfo = async (req, res, next) => {
         if (!userData) {
             return res.status(404).json({ message: 'User not found' });
         }
+
+        
 
         return res.status(200).json({
             user: {
