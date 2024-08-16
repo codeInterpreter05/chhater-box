@@ -26,7 +26,7 @@ const ProfileInfo = () => {
     }
 
   return (
-    <div className="absolute bottom-0 h-16 flex items-center justify-between px-4 w-full bg-[#2A2B33]">
+    <div className="absolute bottom-0 h-20 flex items-center justify-between px-4 w-full bg-[#2A2B33]">
         <div className="flex gap-3 items-center justify-center">
             <div className='w-12 h-12 relative hover:cursor-pointer' onClick={() => navigate("/profile")}>
             <Avatar className='w-12 h-12 rounded-full overflow-hidden flex justify-center items-center'>
