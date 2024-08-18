@@ -68,7 +68,7 @@ const NewDM = () => {
             </Tooltip>
         </TooltipProvider>
         <Dialog open={openNewContactModel} onOpenChange={setopenNewContactModel}>
-            <DialogContent className='bg-[#181920] border-none text-white w-[400px] h-[400px] flex flex-col'>
+            <DialogContent className='bg-[#181920] border-none text-white w-[250px] sm:w-[400px] h-[400px] flex flex-col'>
                 <DialogHeader>
                 <DialogTitle>Select a contact</DialogTitle>
                 <DialogDescription>
@@ -93,7 +93,7 @@ const NewDM = () => {
                 <Avatar className='w-12 h-12 rounded-full overflow-hidden flex justify-center items-center'>
                   {
                     
-                    contact.image ? <AvatarImage src={`${HOST}/${contact.image}`} alt="profile" className='w-full h-full object-cover bg-black' /> :
+                    contact.image ? <AvatarImage src={`${HOST}/${contact.image}`} alt="profile" className='w-full h-full object-cover bg-black rounded-full' /> :
                       (
                         <div className={`uppercase h-12 w-12 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(contact.color)}`}>
                           {contact.username ? contact.username.charAt(0).toUpperCase() : contact?.username?.charAt(0).toUpperCase()}
