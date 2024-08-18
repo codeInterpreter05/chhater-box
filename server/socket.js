@@ -1,4 +1,5 @@
-import { Server as SocketIoServer } from 'socket.io';    
+import { Server as SocketIoServer } from 'socket.io'; 
+import { Message } from './models/message.model.js';
 
 export const setUpSocket = (server) => {
     const io = new SocketIoServer(server, {
@@ -21,8 +22,23 @@ export const setUpSocket = (server) => {
         }
     };
 
-    const sendMessage =async (message) => {
-         
+    const sendMessage = async (message) => {
+         const senderSocketId = userSocketMap.get(message.sender);
+         const receiverSocketId = userSocketMap.get(message.receiver);
+
+         const createdMessage = await Message.create(message);
+
+         const messageData = await Message.findById(createdMessage._id).populate('sender', "id username image color")
+         .populate('receiver', "id username image color")
+        ;
+
+        if(receiverSocketId) {
+            io.to(receiverSocketId).emit('receiveMessage', messageData);
+        }
+
+        if(senderSocketId) {
+            io.to(senderSocketId).emit('sendMessage', messageData);
+        }
     }
 
     io.on('connection', (socket) => {
