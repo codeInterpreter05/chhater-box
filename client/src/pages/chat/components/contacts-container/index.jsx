@@ -21,9 +21,6 @@ const ContactsContainer = () => {
         console.error(error);
       }
 
-      if(response.data.contacts){
-        console.log(response.data.contacts);
-      }
    }
 
    getContacts();
@@ -36,7 +33,7 @@ const ContactsContainer = () => {
         <Logo/>
       </div>
       <div className="my-5">
-        <div className="flex items-center justify-between pr-8">
+        <div className="flex items-center justify-start gap-4 pr-8">
             <Title title="Direct Messages" />
             <NewDM/>
         </div>
@@ -58,7 +55,7 @@ export default ContactsContainer;
 
 const Title = ({ title }) => {
     return (
-      <h6 className="uppercase tracking-widest text-neutral-400 pl-10 font-light text-opacity-90 text-small">
+      <h6 className="uppercase tracking-widest text-neutral-400 pl-6 font-light text-opacity-90 text-small">
         {title}
       </h6>
     )
