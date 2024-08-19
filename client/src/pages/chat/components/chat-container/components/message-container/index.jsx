@@ -13,7 +13,6 @@ const MessageContainer = () => {
     const getMessages = async () => {
       try {
         const response = await apiClient.post(GET_MESSAGES_ROUTE, {_id: selectedChatData._id}, {withCredentials: true});
-        console.log(response)
         if(response.status === 200 && response.data.messages){
           setSelectedChatMessages(response.data.messages);
         }
@@ -37,7 +36,6 @@ const MessageContainer = () => {
   }, [selectedChatMessages]);
 
   const renderMessages = () => {
-    console.log(selectedChatMessages);
     if (!Array.isArray(selectedChatMessages)) {
       return null;
     }
@@ -80,7 +78,7 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto scrollbar-hidden p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
+    <div className="flex-1 overflow-y-auto no-scrollbar p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
       {renderMessages()}
       <div ref={scrollRef}></div>
     </div>
