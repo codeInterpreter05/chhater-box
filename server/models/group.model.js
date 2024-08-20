@@ -39,6 +39,4 @@ groupSchema.pre('update', function(next) {
     next();
 })
 
-const Group = mongoose.model('Groups', groupSchema);
-
-export default Group;
+export const Group = mongoose.model('Groups', groupSchema);
