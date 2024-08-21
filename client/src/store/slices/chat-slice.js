@@ -23,6 +23,14 @@ export const createChatSlice = (set, get) => ({
     fileDownloadProgress: 0,
     setFileDownloadProgress: (fileDownloadProgress) => set({ fileDownloadProgress }),
 
+    groups: [],
+    setGroups: (groups) => set({ groups }),
+
+    addGroup: (group) => {
+        const groups = get().groups;
+        set({ groups: [group, ...groups] });
+    },
+
     closeChat: () => {
         set({
             selectedChatType: undefined,

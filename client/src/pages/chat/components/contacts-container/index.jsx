@@ -3,7 +3,7 @@ import ProfileInfo from "./components/profile-info";
 import NewDM from "./components/new-dm";
 import { useEffect } from "react";
 import apiClient from "@/lib/api-client";
-import { GET_CONTACTS_FOR_DM_ROUTE } from "@/utils/constants";
+import { GET_CONTACTS_FOR_DM_ROUTE, GET_GROUPS_ROUTE } from "@/utils/constants";
 import { useAppStore } from "@/store";
 import ContactList from "@/components/ui/ContactList";
 import CreateGroup from "./components/create-group";
@@ -11,7 +11,7 @@ import CreateGroup from "./components/create-group";
 
 const ContactsContainer = () => {
 
-  const {directMessagesContacts, setDirectMessagesContacts} = useAppStore();
+  const {directMessagesContacts, setDirectMessagesContacts, groups, setGroups} = useAppStore();
 
   useEffect(() => {
    const getContacts = async () => {
@@ -24,8 +24,20 @@ const ContactsContainer = () => {
 
    }
 
+   const getGroups = async () => {
+     try {
+        const response = await apiClient.get(GET_GROUPS_ROUTE, { withCredentials: true });
+        if(response.status === 200 && response.data.groups) {
+          setGroups(response.data.groups);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+   }
+
    getContacts();
-  }, [])
+   getGroups();
+  }, [setGroups, setDirectMessagesContacts])
   
 
   return (
@@ -46,6 +58,9 @@ const ContactsContainer = () => {
         <div className="flex items-center justify-start gap-4 pr-8">
             <Title title="Groups" />
             <CreateGroup/>
+        </div>
+        <div className="max-h-[80vh] overflow-y-auto scrollbar-hidden">
+          <ContactList contacts={groups} isGroup={true}/>
         </div>
       </div>
       <ProfileInfo/>

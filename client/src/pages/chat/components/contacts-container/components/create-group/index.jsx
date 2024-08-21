@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input'
 import Lottie from 'react-lottie'
 import { animationDefualtOptions, getColor } from '@/utils/utils'
-import { GET_ALL_CONTACTS_ROUTE, SEARCH_CONTACTS_ROUTE } from '@/utils/constants'
+import { CREATE_GROUP_ROUTE, GET_ALL_CONTACTS_ROUTE, SEARCH_CONTACTS_ROUTE } from '@/utils/constants'
 import apiClient from '@/lib/api-client'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
@@ -28,7 +28,7 @@ import MultipleSelector from '@/components/ui/multiselect'
   
 
 const CreateGroup = () => {
-    const {setSelectedChatType, setSelectedChatData} = useAppStore();
+    const {setSelectedChatType, setSelectedChatData, addGroup} = useAppStore();
     const [newGroupModel, setNewGroupModel] = useState(false)
     const [searchedContacts, setSearchedContacts] = useState([]);
     const [allContacts, setAllContacts] = useState([]);
@@ -54,7 +54,24 @@ const CreateGroup = () => {
     
 
     const createGroup = async () => {
+        try {
+            if(groupName.length > 0 && selectedContacts.length > 1) {
+                const response = await apiClient.post(CREATE_GROUP_ROUTE, {
+                    name: groupName,
+                    members: selectedContacts.map(contact => contact.value)
+                }, { withCredentials: true });
 
+                if(response.status === 201) {
+                    setNewGroupModel(false);
+                    setGroupName("");
+                    setselectedContacts([]);
+                    addGroup(response.data.group);
+                } 
+            }
+           
+        } catch (error) {
+            console.error(error)
+        }
     }
 
   return <>
@@ -95,7 +112,7 @@ const CreateGroup = () => {
                     />
                 </div>
                 <div>
-                    <Button className='w-full bg-purple-700 hover:bg-purple-900 transition-all duration-300' onClick={createGroup}>Create Group</Button>
+                    <Button className='w-full bg-purple-700 hover:bg-purple-900 transition-all duration-300' onClick={() => createGroup()}>Create Group</Button>
                 </div>
             </DialogContent>
         </Dialog>

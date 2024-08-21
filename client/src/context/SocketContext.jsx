@@ -35,7 +35,15 @@ export const SocketProvider = ({ children }) => {
                 }
             }
 
+            const handleReceiveGroupMessage = (message) => {
+                const {selectedChatData, selectedChatType, addMessage} = useAppStore.getState();
+                if(selectedChatType === 'group') {
+                    addMessage(message);
+                }
+            }
+
             socket.current.on('receiveMessage', handleReceiveMessage);
+            socket.current.on('receiveGroupMessage', handleReceiveGroupMessage);
 
             return () => {
                 socket.current.disconnect();

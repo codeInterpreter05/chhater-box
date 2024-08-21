@@ -6,7 +6,7 @@ import { getColor } from '@/utils/utils';
 
 const ContactList = ({contacts, isGroup = false}) => {
 
-    const {selectedChatType, setSelectedChatType, selectedChatData, setSelectedChatData, setSelectedChatMessages, selectedChatMessages} = useAppStore();
+    const {selectedChatType, setSelectedChatType, selectedChatData, setSelectedChatData, setSelectedChatMessages, selectedChatMessages, groups} = useAppStore();
 
     const handleClick = (contact) => {
         if(isGroup){
@@ -16,8 +16,6 @@ const ContactList = ({contacts, isGroup = false}) => {
         }
 
        setSelectedChatData(contact);   
-
-      //  console.log(selectedChatMessages[(selectedChatMessages.length) - 1].content)
 
         if(selectedChatData && selectedChatData._id !== contact._id) {
             setSelectedChatMessages([]);
@@ -29,7 +27,7 @@ const ContactList = ({contacts, isGroup = false}) => {
     <div className='mt-5'>
         {
             contacts.map((contact, index) => (
-                <div key={contact._id} onClick={() => handleClick(contact)} className={`pl-6 py-2 transition-all duration-300 cursor-pointer hover:bg-[#8417FF] hover:bg-[#F1F1F111]"} flex justify-start items-center ${contact._id === (selectedChatData && selectedChatData._id) ? "bg-[#8417FF]": ""}`}>
+                <div key={contact._id} onClick={() => handleClick(contact)} className={`pl-6 py-2 transition-all duration-300 cursor-pointer flex justify-start items-center ${contact._id === (selectedChatData && selectedChatData._id) ? "bg-[#8417FF]": " hover:bg-[#2A2B33]"}`}>
 
                     
                     <div className="flex gap-4 items-center justify-center text-neutral-300">
@@ -46,12 +44,19 @@ const ContactList = ({contacts, isGroup = false}) => {
                           </Avatar>
                         }
                         {
-                          isGroup && <div className='bg-[#FFFFFF22] h-10 w-10 flex items-center justify-center rounded-full '> # </div>
+                          isGroup && 
+                          
+                            <div className={`uppercase h-12 w-12 text-2xl border-[1px] flex items-center justify-center rounded-full ${getColor(contact.color)}`}>
+                              #
+                            </div>
+                            
+
+                          
                         } 
                         
                         <div className="flex flex-col">
-                        <span className='uppercase'>{contact.username}</span>
-                        {/* <span className='text-gray-100'>You: {(selectedChatMessages[selectedChatMessages.length - 1]).content}</span> */}
+                        <span className='uppercase'>{isGroup ? contact.name : contact.username}</span>
+                       
                         </div>
                         
                     </div>

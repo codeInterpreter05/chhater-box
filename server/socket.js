@@ -1,5 +1,6 @@
 import { Server as SocketIoServer } from 'socket.io'; 
 import { Message } from './models/message.model.js';
+import { Group } from './models/group.model.js';
 
 export const setUpSocket = (server) => {
     const io = new SocketIoServer(server, {
@@ -40,6 +41,46 @@ export const setUpSocket = (server) => {
         }
     }
 
+    const sendGroupMessage = async (message) => {
+        const { groupId, sender, content, messageType, fileURL } = message;
+
+        const createdMessage = await Message.create({
+            sender, 
+            receiver: null,
+            content,
+            messageType,
+            fileURL,
+            timestamp: new Date().toISOString(),
+        })
+
+        const messageData = await Message.findById(createdMessage._id).populate('sender', "id username image color")
+        .exec();
+
+        await Group.findByIdAndUpdate(groupId, { $push: { messages: createdMessage._id } });
+
+        const group = await Group.findById(groupId).populate('members');
+
+        const finalData = {...messageData._doc, groupId: group._id};
+
+        if(group && group.members.length > 1) {
+            group.members.forEach((member) => {
+                const memberSocketId = userSocketMap.get(member._id.toString());
+                if(memberSocketId) {
+                    io.to(memberSocketId).emit('receiveGroupMessage', finalData);
+                }
+
+                
+            });
+
+            const adminSocketId = userSocketMap.get(group.admin._id.toString());
+                if(adminSocketId) {
+                    io.to(adminSocketId).emit('receiveGroupMessage', finalData);
+                }
+        }
+
+
+    }
+
     io.on('connection', (socket) => {
         const userId = socket.handshake.query.userId;
 
@@ -50,7 +91,7 @@ export const setUpSocket = (server) => {
         }
 
         socket.on('sendMessage', sendMessage);
-
+        socket.on('sendGroupMessage', sendGroupMessage);
         socket.on('disconnect', () => {
             disconnect(socket);
         });

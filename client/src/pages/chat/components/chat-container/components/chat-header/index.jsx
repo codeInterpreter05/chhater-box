@@ -9,7 +9,7 @@ const ChatHeader = () => {
 
   const { closeChat, selectedChatData, selectedChatType } = useAppStore();
   return (
-    <div className="h-[10vh] border-b-2 border-[#2F303B] flex items-center justify-between p-8 py-10">
+    <div className="h-[10vh] border-b-2 border-[#2F303B] flex items-center justify-between px-3 sm:px-8 py-10">
         <div className="flex gap-5 items-center w-full justify-between">
             <div className="flex gap-3 items-center justify-center">
               <div className='w-12 h-12 relative'>
@@ -18,15 +18,15 @@ const ChatHeader = () => {
                       
                       selectedChatData.image ? <AvatarImage src={`${HOST}/${selectedChatData.image}`} alt="profile" className='w-full h-full object-cover bg-black' /> :
                         (
-                          <div className={`uppercase h-12 w-12 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(selectedChatData.color)}`}>
-                            {selectedChatData.username ? selectedChatData.username.charAt(0).toUpperCase() : selectedChatData?.username?.charAt(0).toUpperCase()}
+                          <div className={`uppercase h-12 w-12 text-2xl border-[1px] flex items-center justify-center rounded-full ${getColor(selectedChatData.color)}`}>
+                            {selectedChatData.username ? selectedChatData.username.charAt(0).toUpperCase() : "#"}
                           </div>
                         )}
                   </Avatar>
                   </div>
                   <div className='uppercase ml-1 text-xl'>
                     {
-                      selectedChatType === 'contact' && selectedChatData.username? selectedChatData.username : ""
+                      selectedChatType === 'contact' && selectedChatData.username? selectedChatData.username : selectedChatData.name
                     }
                   </div>
             </div>

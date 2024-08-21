@@ -185,6 +185,16 @@ const MessageBar = () => {
     if (selectedChatType === 'contact') {
       socket.emit('sendMessage', newMessage);
       addMessage(newMessage);
+    } else if (selectedChatType === 'group') {
+      socket.emit('sendGroupMessage', {
+        sender: userInfo._id,
+        content: message,
+        messageType: 'text',
+        fileURL: undefined,
+        timestamp: new Date().toISOString(),
+        groupId: selectedChatData._id,
+      });
+      
     }
 
     setMessage("");
@@ -228,6 +238,15 @@ const MessageBar = () => {
             };
             socket.emit('sendMessage', newMessage);
             addMessage(newMessage);
+          } else if (selectedChatType === 'group') {
+            socket.emit('sendGroupMessage', {
+              sender: userInfo._id,
+              content: undefined,
+              messageType: 'file',
+              fileURL: response.data.filePath,
+              timestamp: new Date().toISOString(),
+              groupId: selectedChatData._id,
+            });
           }
         }
       }
