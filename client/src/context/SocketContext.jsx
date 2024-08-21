@@ -11,7 +11,7 @@ export const useSocket = () => {
 
 export const SocketProvider = ({ children }) => {
     const socket = useRef();
-    const { userInfo } = useAppStore();
+    const { userInfo, addGroupInGroupList, addContactsInDMList } = useAppStore();
 
     useEffect(() => {
         if (userInfo) {
@@ -27,12 +27,15 @@ export const SocketProvider = ({ children }) => {
             });
 
 
-            const  handleReceiveMessage = (message) => {
+            const handleReceiveMessage = (message) => {
                 const {selectedChatData, selectedChatType, addMessage} = useAppStore.getState();
 
                 if(selectedChatType !== undefined && (selectedChatData._id === message.sender._id || selectedChatData._id === message.receiver._id)) {
                     addMessage(message);
+                    
                 }
+                addContactsInDMList(message);
+                
             }
 
             const handleReceiveGroupMessage = (message) => {
@@ -40,6 +43,7 @@ export const SocketProvider = ({ children }) => {
                 if(selectedChatType === 'group') {
                     addMessage(message);
                 }
+                addGroupInGroupList(message)
             }
 
             socket.current.on('receiveMessage', handleReceiveMessage);

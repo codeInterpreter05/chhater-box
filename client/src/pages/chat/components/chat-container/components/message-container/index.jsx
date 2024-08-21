@@ -1,6 +1,6 @@
 import apiClient from '@/lib/api-client';
 import { useAppStore } from '@/store';
-import { GET_MESSAGES_ROUTE, HOST } from '@/utils/constants';
+import { GET_GROUP_MESSAGES_ROUTE, GET_MESSAGES_ROUTE, HOST } from '@/utils/constants';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { MdFolderZip } from 'react-icons/md';
@@ -28,9 +28,23 @@ const MessageContainer = () => {
       }
     };
 
+    const getGroupMessages = async () => {
+      try {
+        const response = await apiClient.get(`${GET_GROUP_MESSAGES_ROUTE}/${selectedChatData._id}`, { withCredentials: true });
+
+        if (response.status === 200 && response.data.messages) {
+          setSelectedChatMessages(response.data.messages);
+        }
+      } catch (error) {
+        console.error('Error fetching group messages:', error);
+      }
+    }
+
     if (selectedChatData._id) {
       if (selectedChatType === 'contact') {
         getMessages();
+      } else if (selectedChatType === 'group') {
+        getGroupMessages();
       }
     }
   }, [selectedChatData, selectedChatType, setSelectedChatMessages]);
@@ -146,7 +160,7 @@ const MessageContainer = () => {
       {message.messageType === 'file' && (
           <div
             className={`${
-              `text-[${getColor(message.sender.color)}`
+              ` text-[${getColor(message.sender.color)}`
             } border inline-block px-4 py-3 rounded my-1 max-width-[50%] break-words`}
           >
             {checkIfImage(message.fileURL) ? (

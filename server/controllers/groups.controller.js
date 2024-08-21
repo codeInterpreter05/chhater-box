@@ -45,3 +45,29 @@ export const getGroups = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+export const getGroupMessages = async (req, res, next) => {
+    try {
+        const { groupId } = req.params;
+
+        const group = await Group.findById(groupId).populate({ 
+            path:'messages', 
+            populate: {
+                path: 'sender',
+                select: '_id username image color'
+            },
+        });  
+
+        if (!group) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+
+        const messages = group.messages;
+
+        return res.status(200).json({ messages });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}

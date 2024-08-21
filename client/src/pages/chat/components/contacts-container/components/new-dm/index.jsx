@@ -32,7 +32,6 @@ const NewDM = () => {
 
     const searchContacts = async (searchTerm) => {
         try {
-            console.log('Search term:', searchTerm)
             if(searchTerm.length > 0) {
                 const response = await apiClient.post(SEARCH_CONTACTS_ROUTE, { searchTerm }, { withCredentials: true });
                 if(response.status === 200) {
