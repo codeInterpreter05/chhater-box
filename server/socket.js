@@ -13,7 +13,6 @@ export const setUpSocket = (server) => {
     const userSocketMap = new Map();
 
     const disconnect = (socket) => {
-        console.log(`User disconnected with id: ${socket.id}`);
         for (const [userId, socketId] of userSocketMap.entries()) {
             if (socketId === socket.id) {
                 userSocketMap.delete(userId);
@@ -46,7 +45,6 @@ export const setUpSocket = (server) => {
 
         if (userId) {
             userSocketMap.set(userId, socket.id);
-            console.log(`User connected with id: ${userId} with socket id: ${socket.id}`);
         } else {
             console.log('User ID not provided');
         }

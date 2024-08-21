@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import {Group} from '../models/group.model.js';
 import {User} from '../models/user.model.js';
 
@@ -29,3 +30,18 @@ export const createGroup = async (req, res, next) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+export const getGroups = async (req, res, next) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.userId);
+
+        const groups = await Group.find({ 
+            $or: [{admin: userId}, { members: userId }],
+         }).sort({ updatedAt: -1 });
+
+        return res.status(200).json({ groups });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
