@@ -31,6 +31,7 @@
     "react-router-dom": "^6.26.0",
     "socket.io-client": "^4.7.5",
     "sonner": "^1.5.0",
+    "synchat": "file:..",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.5.4"
