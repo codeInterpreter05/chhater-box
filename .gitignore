@@ -1,0 +1,60 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Logs
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build output
+dist/
+build/
+*.class
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+bower_components/
+jspm_packages/
+
+# Miscellaneous
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Test files
+coverage/
+*.seed
+
+# Package distribution
+*.tgz
+*.zip
+*.tar.gz
+
+# Docker
+Dockerfile
+docker-compose.yml
+*.dockerignore
