@@ -4,12 +4,10 @@
     "private": true,
     "scripts": {
       "start": "npm run build && npm run server",
-      
-        "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
-        "client": "cd client && npm run dev",
-        "server": "cd server && npm run dev",
-
-
+      "build": "cd client && npm install && npm run build",
+      "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+  "client": "cd client && npm run dev",
+  "server": "cd server && npm run dev",
       "test": "echo \"No tests specified\" && exit 0"
     },
     "dependencies": {
